@@ -1,0 +1,10 @@
+F:\Develop\CS\THMarkup\obj\Debug\netcoreapp3.1\THMarkup.GeneratedMSBuildEditorConfig.editorconfig
+F:\Develop\CS\THMarkup\obj\Debug\netcoreapp3.1\THMarkup.AssemblyInfoInputs.cache
+F:\Develop\CS\THMarkup\obj\Debug\netcoreapp3.1\THMarkup.AssemblyInfo.cs
+F:\Develop\CS\THMarkup\obj\Debug\netcoreapp3.1\THMarkup.csproj.CoreCompileInputs.cache
+F:\Develop\CS\THMarkup\bin\Debug\netcoreapp3.1\THMarkup.deps.json
+F:\Develop\CS\THMarkup\bin\Debug\netcoreapp3.1\THMarkup.dll
+F:\Develop\CS\THMarkup\bin\Debug\netcoreapp3.1\THMarkup.pdb
+F:\Develop\CS\THMarkup\obj\Debug\netcoreapp3.1\THMarkup.dll
+F:\Develop\CS\THMarkup\obj\Debug\netcoreapp3.1\THMarkup.pdb
+F:\Develop\CS\THMarkup\obj\Debug\netcoreapp3.1\THMarkup.csproj.AssemblyReference.cache
