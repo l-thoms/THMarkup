@@ -337,6 +337,7 @@ namespace THMarkup
 									break;
 								}
 								position += CountSlash(document, position);
+								//continue;
 							}
 							else if (info == SlashInfo.CR || info == SlashInfo.CRLF)
 							{
@@ -395,6 +396,7 @@ namespace THMarkup
 						{
 							if (CountSlash(document, position) % 2 == 1) throw new Exception("Escape invalid");
 							position += CountSlash(document, position);
+							continue;
 						}
 						else if(info == SlashInfo.EscapeBegin || info == SlashInfo.EscapeEnd)
 						{

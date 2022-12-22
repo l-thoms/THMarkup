@@ -14,12 +14,14 @@ namespace THMarkup
 		Windows,
 		Linux
 	}
+	enum NextState{ Fill, MoveNext, Close, Completed}
 	public class THDocumentWriter
 	{
 		Stack<ITHObject> Operator = new Stack<ITHObject>();
 		THDocument Document;
 		string Text = "";
 		OsInformation OsInformation;
+		ITHObject ObjectFillSelected;
 		bool ScanList(ITHObject list)
 		{
 			if (list.GetType() != typeof(THList)) return false;
@@ -53,10 +55,34 @@ namespace THMarkup
 		public string Write()
 		{
 			Text = null;
-			Fill(Document);
+			ObjectFillSelected = Document;
+			NextState nextState = Fill(ObjectFillSelected);
+			while(nextState != NextState.Completed)
+			{
+				switch(nextState)
+				{
+					case NextState.Fill:
+						nextState = Fill(ObjectFillSelected);
+						break;
+					case NextState.MoveNext:
+						nextState = MoveNext();
+						break;
+					case NextState.Close:
+						nextState = Close();
+						if(FMoveNext)
+						{
+							if (Operator.Count == 0) nextState = NextState.Completed;
+							else nextState = NextState.MoveNext;
+							FMoveNext = false;
+							continue;
+						}
+						break;
+				}
+				if (Operator.Count == 0) break;
+			}
 			return Text;
 		}
-		void Fill(ITHObject tHObject)
+		NextState Fill(ITHObject tHObject)
 		{
 			bool begins = true;
 			while (begins || Operator.Peek().Children.Count != 0)
@@ -72,7 +98,7 @@ namespace THMarkup
 			}
 			if (Operator.Peek().InnerText != null) Text += FormatText(Operator.Peek().InnerText, TextPos.InnerText);
 			ITHObject currentObject = Operator.Pop();
-			if (Operator.Count == 0) return;
+			if (Operator.Count == 0) return NextState.Completed;
 			if(currentObject.GetType() == typeof(THListItem))
 			{
 				if (Operator.Peek().Children.IndexOf(currentObject) != Operator.Peek().Children.Count - 1)
@@ -87,27 +113,36 @@ namespace THMarkup
 			}
 			if (currentObject == Operator.Peek().Children[Operator.Peek().Children.Count - 1])
 			{
-				Close();
+				//Close();
+				return NextState.Close;
 			}
 			else
 			{
 				Operator.Push(currentObject);
-				MoveNext();
+				//MoveNext();
+				return NextState.MoveNext;
 			}
 		}
-		void MoveNext()
+		bool FMoveNext = false;
+		NextState MoveNext()
 		{
+			FMoveNext = false;
 			ITHObject pop = Operator.Pop();
-			if (Operator.Count == 0) return;
+			if (Operator.Count == 0) return NextState.Completed;
 			int nextCount = Operator.Peek().Children.IndexOf(pop) + 1;
 			if (nextCount == Operator.Peek().Children.Count)
 			{
-				Close();
-				if (Operator.Count == 0) return;
-				MoveNext();
+				//Close();
+				FMoveNext = true;
+				return NextState.Close;
+				//if (Operator.Count == 0) return NextState.Completed;
+				//return NextState.MoveNext;
 			}
 			else
-				Fill(Operator.Peek().Children[nextCount]);
+			{
+				ObjectFillSelected = Operator.Peek().Children[nextCount];
+				return NextState.Fill;
+			}
 		}
 		bool HaveLineFeed(string text)
 		{
@@ -136,13 +171,13 @@ namespace THMarkup
 			}
 			return false;
 		}
-		void Close()
+		NextState Close()
 		{
 			ITHObject pop = Operator.Pop();
 			//string tmpName = pop.Name;
 			//if (tmpName == null) tmpName = "NULL";
 			//Console.WriteLine("Name: " + tmpName + ", Operator count:" + Operator.Count);
-			if (Operator.Count == 0) return;
+			if (Operator.Count == 0) return NextState.Completed;
 			if (pop.GetType() == typeof(THListItem))
 			{
 				if (Operator.Peek().Children.IndexOf(pop) != Operator.Peek().Children.Count - 1)
@@ -168,11 +203,11 @@ namespace THMarkup
 				else
 					Text += ";" + LineFeed;
 			}
-			if (pop == Operator.Peek()) Close();
+			if (pop == Operator.Peek()) return NextState.Close;
 			else 
 			{
 				Operator.Push(pop);
-				MoveNext();
+				return NextState.MoveNext;
 			}
 		}
 		bool IsWhiteSpace(char target)

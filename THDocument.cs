@@ -16,7 +16,6 @@ namespace THMarkup
 				_children = value;
 			}
 		}
-		private string _innerText = null;
 		public string InnerText
 		{
 			get => null;

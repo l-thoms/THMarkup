@@ -1,4 +1,0 @@
-F:\Develop\CS\THMarkup\obj\Release\netcoreapp3.1\THMarkup.GeneratedMSBuildEditorConfig.editorconfig
-F:\Develop\CS\THMarkup\obj\Release\netcoreapp3.1\THMarkup.AssemblyInfoInputs.cache
-F:\Develop\CS\THMarkup\obj\Release\netcoreapp3.1\THMarkup.AssemblyInfo.cs
-F:\Develop\CS\THMarkup\obj\Release\netcoreapp3.1\THMarkup.csproj.CoreCompileInputs.cache
