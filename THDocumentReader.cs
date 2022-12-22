@@ -479,7 +479,7 @@ namespace THMarkup
 		{
 			string result = "";
 			int subAlignment = 0, tmpAlignment = 0;
-			//Get Alignment, 空行不参与计数, 至下一行开始计数
+			//Get Alignment
 			int cp = GetNextLine(content,0);
 			bool beginOfLine = false, beginAlignment = true;
 			if (cp == -1)
@@ -530,7 +530,6 @@ namespace THMarkup
 					cp++;
 				}
 			}
-			//Console.WriteLine("Alignment: " + alignment + ", SubAlignment: " + subAlignment);
 			if (alignment != -1)
 				subAlignment = Math.Min(subAlignment, alignment);
 			//End of alignment
@@ -788,24 +787,6 @@ namespace THMarkup
 		THDocument Document;
 		public THDocument Read(string document)
 		{
-			/*
-			//Get lines for debug
-			List<int> lines = new List<int>();
-			lines.Add(0);
-			int currentLine = 0;
-			for (int j = 0; j < document.Length; j++)
-			{
-				if (GetLineFeed(document, j) == THMarkup.LineFeed.LF || GetLineFeed(document, j) == THMarkup.LineFeed.CR)
-				{
-					lines.Add(j + 1);
-				}
-				else if (GetLineFeed(document, j) == THMarkup.LineFeed.CRLF)
-				{
-					lines.Add(j + 2);
-					j++;
-				}
-			}
-			*/
 			//Begin to parse
 			CurrentText = "";
 			CurrentState = ReadState.Space;
@@ -816,27 +797,6 @@ namespace THMarkup
 			int i = 0;
 			while(i < document.Length)
 			{
-				/*
-				for(int l = 0;l<lines.Count;l++)
-				{
-					if (i >= lines[l] && (l == lines.Count-1 || i < lines[l+1]))
-					{
-						if(l != currentLine)
-						{
-							Console.WriteLine();
-							currentLine = l;
-						}
-						Console.Write("Line: " + (l + 1).ToString() + ", Col: " + (i - lines[l] + 1).ToString() + "(" +i.ToString() + "), BufferCount: " + Buffer.Count.ToString()
-						+", State: " + CurrentState.ToString());
-						if(Buffer.Count > 0)
-						{
-							Console.Write(", Type: " + Buffer.Peek().GetType().ToString());
-						}
-						Console.WriteLine();
-						break;
-					}
-				}
-				*/
 				if (CurrentState == ReadState.Space)
 				{
 					IsList = false;
