@@ -235,7 +235,11 @@ namespace THMarkup
 			{
 				if (document[position] != '\\') break;
 				count++;position++;
-				if (position == document.Length - 1) break;
+				if (position == document.Length - 1)
+				{
+					if (document[position] == '\\') count++;
+					break;
+				}
 			}
 			return count;
 		}
